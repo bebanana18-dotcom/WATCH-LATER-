@@ -302,6 +302,7 @@ This creates the actual Kubernetes cluster.
 The API server is only reachable from within `10.0.0.0/20` — which includes the Jenkins VM.
 
 Note: this is with comment and space for readability 
+
 Note : use Gloud command after this one
 
 ```bash
