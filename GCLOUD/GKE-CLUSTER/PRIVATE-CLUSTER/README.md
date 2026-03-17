@@ -448,6 +448,17 @@ gcloud compute ssh jenkins-master-vm \
   --project=piyush-gcp \
   --zone=us-central1-a \
   --tunnel-through-iap
+
+#To increase the performance of the tunnel, consider installing NumPy. For instructions,
+#please see https://cloud.google.com/iap/docs/using-tcp-forwarding#increasing_the_tcp_upload_bandwidth
+#step1
+$(gcloud info --format="value(basic.python_location)") -m pip install numpy
+#step2
+export CLOUDSDK_PYTHON_SITEPACKAGES=1
+#step3
+echo 'export CLOUDSDK_PYTHON_SITEPACKAGES=1' >> ~/.bashrc
+source ~/.bashrc
+
 ```
 
 **On Jenkins VM — install tools and connect:**
