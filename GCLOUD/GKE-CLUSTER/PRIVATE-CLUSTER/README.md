@@ -424,16 +424,12 @@ gcloud beta container \
 # Auth & service account
   --no-enable-basic-auth \
   --service-account "gke-node-sa@piyush-gcp.iam.gserviceaccount.com" \
-  --scopes "https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring" \
   --metadata disable-legacy-endpoints=true \
 
 # Networking
   --enable-private-nodes \
   --enable-ip-alias \
-  --enable-ip-access \
   --enable-dataplane-v2 \
-  --disable-default-snat \
-  --no-enable-google-cloud-access \
   --network "projects/piyush-gcp/global/networks/vpc-gke" \
   --subnetwork "projects/piyush-gcp/regions/us-central1/subnetworks/subnet-1" \
   --cluster-secondary-range-name "gke-pods" \
@@ -496,14 +492,10 @@ gcloud beta container clusters create "standard-cluster-private-1" \
   --default-max-pods-per-node "110" \
   --no-enable-basic-auth \
   --service-account "gke-node-sa@piyush-gcp.iam.gserviceaccount.com" \
-  --scopes "https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring" \
   --metadata disable-legacy-endpoints=true \
   --enable-private-nodes \
   --enable-ip-alias \
-  --enable-ip-access \
   --enable-dataplane-v2 \
-  --disable-default-snat \
-  --no-enable-google-cloud-access \
   --network "projects/piyush-gcp/global/networks/vpc-gke" \
   --subnetwork "projects/piyush-gcp/regions/us-central1/subnetworks/subnet-1" \
   --cluster-secondary-range-name "gke-pods" \
