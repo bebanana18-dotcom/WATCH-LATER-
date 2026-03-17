@@ -428,7 +428,7 @@ gcloud beta container \
 
 # Networking
   --enable-private-nodes \
-  --enable-ip-alias \
+  --enable-ip-alias \ # for gke-pods and gke-services in secondary ranges in subnet of vpc
   --enable-dataplane-v2 \
   --network "projects/piyush-gcp/global/networks/vpc-gke" \
   --subnetwork "projects/piyush-gcp/regions/us-central1/subnetworks/subnet-1" \
