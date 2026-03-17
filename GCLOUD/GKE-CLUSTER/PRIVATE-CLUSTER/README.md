@@ -300,6 +300,8 @@ gcloud compute firewall-rules create allow-github-webhooks \
 
 This creates the actual Kubernetes cluster.  
 The API server is only reachable from within `10.0.0.0/20` — which includes the Jenkins VM.
+Note: this is with comment and space for readability 
+Note : use Gloud command after this one
 
 ```bash
 # Identity & project
@@ -370,6 +372,60 @@ gcloud beta container \
   --addons HorizontalPodAutoscaling,HttpLoadBalancing,NodeLocalDNS,GcePersistentDiskCsiDriver,GcpFilestoreCsiDriver \
 
 # Upgrade policy
+  --enable-autoupgrade \
+  --enable-autorepair \
+  --max-surge-upgrade 1 \
+  --max-unavailable-upgrade 0
+```
+## USE THIS
+```bash
+#!/bin/bash
+
+
+set -x
+
+gcloud beta container clusters create "standard-cluster-private-1" \
+  --project "piyush-gcp" \
+  --region "us-central1" \
+  --cluster-version "1.34.4-gke.1047000" \
+  --release-channel "regular" \
+  --machine-type "e2-custom-2-5120" \
+  --image-type "COS_CONTAINERD" \
+  --disk-type "pd-standard" \
+  --disk-size "20" \
+  --spot \
+  --num-nodes "1" \
+  --max-pods-per-node "110" \
+  --default-max-pods-per-node "110" \
+  --no-enable-basic-auth \
+  --service-account "gke-node-sa@piyush-gcp.iam.gserviceaccount.com" \
+  --scopes "https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring" \
+  --metadata disable-legacy-endpoints=true \
+  --enable-private-nodes \
+  --enable-ip-alias \
+  --enable-ip-access \
+  --enable-dataplane-v2 \
+  --disable-default-snat \
+  --no-enable-google-cloud-access \
+  --network "projects/piyush-gcp/global/networks/vpc-gke" \
+  --subnetwork "projects/piyush-gcp/regions/us-central1/subnetworks/subnet-1" \
+  --cluster-secondary-range-name "gke-pods" \
+  --services-secondary-range-name "gke-services" \
+  --no-enable-intra-node-visibility \
+  --enable-master-authorized-networks \
+  --master-authorized-networks "10.0.0.0/20" \
+  --node-locations us-central1-a,us-central1-b,us-central1-c \
+  --logging=SYSTEM,WORKLOAD \
+  --monitoring=SYSTEM \
+  --enable-managed-prometheus \
+  --enable-shielded-nodes \
+  --shielded-integrity-monitoring \
+  --shielded-secure-boot \
+  --security-posture=standard \
+  --workload-vulnerability-scanning=disabled \
+  --workload-pool "piyush-gcp.svc.id.goog" \
+  --binauthz-evaluation-mode=DISABLED \
+  --addons HorizontalPodAutoscaling,HttpLoadBalancing,NodeLocalDNS,GcePersistentDiskCsiDriver,GcpFilestoreCsiDriver \
   --enable-autoupgrade \
   --enable-autorepair \
   --max-surge-upgrade 1 \
