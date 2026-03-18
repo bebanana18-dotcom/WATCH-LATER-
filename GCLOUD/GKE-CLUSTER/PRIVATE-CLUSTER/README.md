@@ -559,7 +559,7 @@ sudo apt-get install -y kubectl google-cloud-sdk-gke-gcloud-auth-plugin
 #our gke-cluster inside private vpc so use this :   --internal-ip
 gcloud container clusters get-credentials standard-cluster-private-1 \
   --region us-central1 \
-  --project piyush-gcp
+  --project piyush-gcp \
   --internal-ip
 
 # Verify everything is working
