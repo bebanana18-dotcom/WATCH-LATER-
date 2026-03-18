@@ -534,7 +534,7 @@ Because the cluster is private, `kubectl` must be run **from Jenkins VM** — no
 gcloud compute ssh jenkins-master-vm \
   --project=piyush-gcp \
   --zone=us-central1-a \
-  --tunnel-through-iap \
+  --tunnel-through-iap 
 
 
 #To increase the performance of the tunnel, consider installing NumPy. For instructions,
