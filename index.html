@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GCP Mid-Level Engineer — Daily Read</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f12;
+    --surface: #13161b;
+    --surface2: #1a1e26;
+    --border: #252a34;
+    --accent: #4fc3f7;
+    --accent2: #81c784;
+    --warn: #ffb74d;
+    --danger: #ef5350;
+    --purple: #ce93d8;
+    --text: #e8eaf0;
+    --muted: #7a8399;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  /* ── Header ── */
+  .site-header {
+    border-bottom: 1px solid var(--border);
+    padding: 48px 0 36px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .site-header::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 200px;
+    background: radial-gradient(ellipse, rgba(79,195,247,.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .site-header .label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .site-header h1 {
+    font-size: clamp(22px, 4vw, 32px);
+    font-weight: 600;
+    letter-spacing: -.02em;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+  .site-header p {
+    color: var(--muted);
+    font-size: 14px;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  /* ── Nav ── */
+  .toc {
+    max-width: 900px;
+    margin: 32px auto;
+    padding: 0 24px;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
+  }
+  .toc-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 13px;
+    font-family: var(--mono);
+    transition: all .15s;
+  }
+  .toc-item:hover { border-color: var(--accent); color: var(--accent); background: rgba(79,195,247,.04); }
+  .toc-item .num { color: var(--accent); font-size: 11px; }
+
+  /* ── Layout ── */
+  .main { max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* ── Session ── */
+  .session {
+    margin-bottom: 56px;
+    padding-top: 48px;
+    border-top: 1px solid var(--border);
+  }
+  .session:first-child { border-top: none; }
+  .session-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .session-title {
+    font-size: clamp(18px, 3vw, 24px);
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: -.02em;
+    margin-bottom: 4px;
+  }
+  .weight-badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 8px;
+    margin-bottom: 24px;
+    margin-top: 4px;
+  }
+
+  /* ── Comparison table ── */
+  .compare {
+    display: grid;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+  }
+  .compare-row.three { grid-template-columns: 1fr 1fr 1fr; }
+  .compare-header { grid-template-columns: 1fr 1fr; }
+  .compare-header.three { grid-template-columns: 1fr 1fr 1fr; }
+  .compare-cell {
+    background: var(--surface);
+    padding: 14px 16px;
+  }
+  .compare-cell.head {
+    background: var(--surface2);
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: .06em;
+  }
+  .compare-cell ul {
+    list-style: none;
+    padding: 0;
+  }
+  .compare-cell ul li {
+    font-size: 13px;
+    color: var(--muted);
+    padding: 3px 0;
+    padding-left: 14px;
+    position: relative;
+  }
+  .compare-cell ul li::before {
+    content: '·';
+    position: absolute;
+    left: 4px;
+    color: var(--border);
+  }
+  .compare-cell .cell-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 6px;
+    font-family: var(--mono);
+  }
+
+  /* ── Trap / Golden Rule ── */
+  .callout {
+    display: flex;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 8px;
+    margin: 16px 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .callout-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .callout.trap {
+    background: rgba(239,83,80,.07);
+    border: 1px solid rgba(239,83,80,.2);
+    color: #ef9a9a;
+  }
+  .callout.trap .callout-icon::before { content: '⚠'; }
+  .callout.golden {
+    background: rgba(129,199,132,.07);
+    border: 1px solid rgba(129,199,132,.2);
+    color: #a5d6a7;
+  }
+  .callout.golden .callout-icon::before { content: '✓'; }
+  .callout strong { color: #fff; font-weight: 500; }
+
+  /* ── Section heading ── */
+  h3 {
+    font-size: 14px;
+    font-weight: 500;
+    font-family: var(--mono);
+    color: var(--text);
+    letter-spacing: .04em;
+    margin: 28px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── Commands ── */
+  .cmd-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 12px 0;
+  }
+  .cmd-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    font-size: 13px;
+  }
+  .cmd {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    white-space: nowrap;
+    flex-shrink: 0;
+    background: rgba(79,195,247,.08);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .cmd-desc { color: var(--muted); }
+
+  /* ── Fact list ── */
+  .fact-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 12px 0;
+  }
+  .fact-list li {
+    padding: 12px 16px 12px 44px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--muted);
+    position: relative;
+    line-height: 1.6;
+  }
+  .fact-list li .fact-num {
+    position: absolute;
+    left: 14px;
+    top: 13px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .fact-list li strong { color: var(--text); font-weight: 500; }
+
+  /* ── Service tags ── */
+  .services {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0;
+  }
+  .svc-tag {
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    background: var(--surface);
+  }
+  .svc-tag.blue { border-color: rgba(79,195,247,.3); color: var(--accent); background: rgba(79,195,247,.06); }
+  .svc-tag.green { border-color: rgba(129,199,132,.3); color: var(--accent2); background: rgba(129,199,132,.06); }
+  .svc-tag.warn { border-color: rgba(255,183,77,.3); color: var(--warn); background: rgba(255,183,77,.06); }
+  .svc-tag.purple { border-color: rgba(206,147,216,.3); color: var(--purple); background: rgba(206,147,216,.06); }
+
+  /* ── Constraint list ── */
+  .constraint-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 12px 0;
+  }
+  .constraint-list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    font-size: 13px;
+  }
+  .constraint-list .key {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--purple);
+    flex-shrink: 0;
+  }
+  .constraint-list .val { color: var(--muted); }
+
+  /* ── Decision flow ── */
+  .decision-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 12px 0;
+  }
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 11px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    font-size: 13px;
+    position: relative;
+  }
+  .flow-arrow {
+    text-align: center;
+    color: var(--border);
+    font-size: 14px;
+    padding: 2px 0;
+  }
+  .flow-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .flow-text { color: var(--muted); }
+  .flow-text strong { color: var(--text); font-weight: 500; }
+
+  /* ── DB matrix ── */
+  .db-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 10px;
+    margin: 12px 0;
+  }
+  .db-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .db-card .db-name {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .db-card ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .db-card ul li {
+    font-size: 12px;
+    color: var(--muted);
+    padding-left: 12px;
+    position: relative;
+  }
+  .db-card ul li::before {
+    content: '·';
+    position: absolute;
+    left: 3px;
+  }
+
+  /* ── Deployment strategies ── */
+  .strategy-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 12px 0;
+  }
+  @media (max-width: 600px) { .strategy-row { grid-template-columns: 1fr; } }
+  .strategy-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+  }
+  .strategy-card .s-name {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--warn);
+    margin-bottom: 8px;
+  }
+  .strategy-card ul {
+    list-style: none; padding: 0;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .strategy-card ul li { font-size: 12px; color: var(--muted); padding-left: 12px; position: relative; }
+  .strategy-card ul li::before { content: '·'; position: absolute; left: 3px; }
+
+  /* ── Cheatsheet ── */
+  .cheat-section { margin: 28px 0; }
+  .cheat-section h4 {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .rule-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .rule-list li {
+    display: flex;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    font-size: 13px;
+  }
+  .rule-list .arrow { color: var(--accent); font-family: var(--mono); font-size: 12px; flex-shrink: 0; }
+  .rule-list .rule-text { color: var(--muted); }
+  .rule-list .rule-text strong { color: var(--text); font-weight: 500; }
+
+  .trap-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .trap-list li {
+    display: flex;
+    gap: 10px;
+    padding: 10px 14px;
+    background: rgba(239,83,80,.05);
+    border: 1px solid rgba(239,83,80,.15);
+    border-radius: 7px;
+    font-size: 13px;
+  }
+  .trap-list .marker { color: var(--danger); font-size: 12px; flex-shrink: 0; font-family: var(--mono); }
+  .trap-list .trap-text { color: #ef9a9a; }
+  .trap-list .trap-text strong { color: #fff; font-weight: 500; }
+
+  /* ── Arch frameworks ── */
+  .arch-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .arch-list li {
+    padding: 12px 16px 12px 14px;
+    background: var(--surface);
+    border-left: 2px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .arch-list .arch-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-bottom: 4px;
+    letter-spacing: .06em;
+  }
+  .arch-list .arch-flow { color: var(--muted); }
+
+  /* ── Footer ── */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 24px;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  p { margin: 10px 0; color: var(--muted); font-size: 14px; }
+
+  @media (max-width: 500px) {
+    .compare-row, .compare-row.three { grid-template-columns: 1fr; }
+    .strategy-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="label">GCP Mid-Level Engineer</div>
+  <h1>Daily 20-Minute Study Read</h1>
+  <p>All 8 Sessions · Every Interview Trap · Every Golden Rule<br>
+  Repetition rewires identity. Read this every day.</p>
+</header>
+
+<!-- TOC -->
+<nav class="toc">
+  <div class="toc-grid">
+    <a href="#s1" class="toc-item"><span class="num">01</span> GKE <small>92%</small></a>
+    <a href="#s2" class="toc-item"><span class="num">02</span> VPC &amp; Networking <small>88%</small></a>
+    <a href="#s3" class="toc-item"><span class="num">03</span> IAM <small>85%</small></a>
+    <a href="#s5" class="toc-item"><span class="num">04</span> BigQuery <small>75%</small></a>
+    <a href="#s4" class="toc-item"><span class="num">05</span> Pub/Sub <small>70%</small></a>
+    <a href="#s6" class="toc-item"><span class="num">06</span> Storage &amp; DBs <small>68%</small></a>
+    <a href="#s7" class="toc-item"><span class="num">07</span> Compute &amp; Cloud Run <small>62%</small></a>
+    <a href="#s8" class="toc-item"><span class="num">08</span> CI/CD <small>55%</small></a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ───────────── SESSION 1 ───────────── -->
+  <section class="session" id="s1">
+    <div class="session-label">Session 01</div>
+    <div class="session-title">GKE — Google Kubernetes Engine</div>
+    <div class="weight-badge">92% Interview Weight</div>
+
+    <h3>Standard vs Autopilot</h3>
+    <div class="compare">
+      <div class="compare-row">
+        <div class="compare-cell head">Standard</div>
+        <div class="compare-cell head">Autopilot</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">
+          <ul>
+            <li>You manage node pools, OS, SSH</li>
+            <li>Full DaemonSet support</li>
+            <li>Fine-grained cost control</li>
+            <li><strong>Use:</strong> custom nodes, DaemonSets, large-scale cost tuning</li>
+          </ul>
+        </div>
+        <div class="compare-cell">
+          <ul>
+            <li>Google manages all nodes</li>
+            <li>No user DaemonSets allowed</li>
+            <li>Pay per pod resource request</li>
+            <li><strong>Use:</strong> new workloads, compliance, faster time-to-prod</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="callout trap"><span class="callout-icon"></span><div>Always pick <strong>Autopilot for new workloads UNLESS</strong> you need DaemonSets, custom OS, or SSH access to nodes.</div></div>
+
+    <h3>Workload Identity — Know This Cold</h3>
+    <p>Problem: JSON key files in pods. They leak, never rotate, violate least privilege.</p>
+    <p>Solution: Bind a Kubernetes Service Account (KSA) to a GCP Service Account (GSA). The GKE metadata server exchanges the KSA token for a short-lived GCP token. No key file anywhere.</p>
+    <ul class="fact-list">
+      <li><span class="fact-num">01</span>Enable workload pool on cluster</li>
+      <li><span class="fact-num">02</span>Bind KSA to GSA with <strong>roles/iam.workloadIdentityUser</strong></li>
+      <li><span class="fact-num">03</span>Annotate KSA with GSA email</li>
+    </ul>
+    <div class="callout golden"><span class="callout-icon"></span><div>Workload Identity is GKE-specific because K8s needs per-<strong>POD</strong> identity. A node runs 100 pods — they can't all share the node's SA. Cloud Run, Compute Engine just attach an SA directly.</div></div>
+
+    <h3>HPA vs VPA vs Cluster Autoscaler</h3>
+    <div class="compare">
+      <div class="compare-row three">
+        <div class="compare-cell head">HPA</div>
+        <div class="compare-cell head">VPA</div>
+        <div class="compare-cell head">Cluster Autoscaler</div>
+      </div>
+      <div class="compare-row three">
+        <div class="compare-cell">
+          <ul>
+            <li>Adds/removes pod <strong>REPLICAS</strong></li>
+            <li>Based on CPU, memory, custom metrics</li>
+            <li>For stateless services</li>
+            <li>Never use with VPA Auto simultaneously</li>
+          </ul>
+        </div>
+        <div class="compare-cell">
+          <ul>
+            <li>Changes CPU/memory <strong>REQUESTS</strong></li>
+            <li>Restarts pods to apply changes</li>
+            <li>For batch jobs, right-sizing</li>
+            <li>Use Off mode alongside HPA</li>
+          </ul>
+        </div>
+        <div class="compare-cell">
+          <ul>
+            <li>Adds/removes <strong>NODES</strong></li>
+            <li>Triggered by unschedulable pods</li>
+            <li>Node level — not pod level</li>
+            <li>All three can be active together</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="callout trap"><span class="callout-icon"></span><div><strong>HPA + VPA Auto = infinite conflict.</strong> VPA changes requests → HPA recalculates utilization → scales → VPA changes again. Use VPA in Recommendation (Off) mode with HPA.</div></div>
+
+    <h3>Services — The Four Types</h3>
+    <ul class="fact-list">
+      <li><span class="fact-num">CI</span><strong>ClusterIP</strong> — internal only, stable virtual IP. How pods talk to each other.</li>
+      <li><span class="fact-num">NP</span><strong>NodePort</strong> — exposes on 30000–32767 on every node. Rarely used directly in prod.</li>
+      <li><span class="fact-num">LB</span><strong>LoadBalancer</strong> — creates ONE GCP L4 LB per service. 20 services = 20 LBs = expensive.</li>
+      <li><span class="fact-num">HL</span><strong>Headless (clusterIP: None)</strong> — DNS returns pod IPs directly. Use for StatefulSets (Kafka, Cassandra).</li>
+    </ul>
+    <div class="callout trap"><span class="callout-icon"></span><div><strong>LoadBalancer creates one GCP LB per service.</strong> Use Ingress or Gateway API as a single entry point routing to ClusterIP services internally. 20 LoadBalancer services = 20 LBs = unnecessary cost.</div></div>
+
+    <h3>Pod Disruption Budgets</h3>
+    <p>PDB answers: during a disruption, how many pods can be down simultaneously?</p>
+    <p><strong>minAvailable: 2</strong> = always keep 2 pods running. <strong>maxUnavailable: 1</strong> = never have more than 1 pod down.</p>
+    <div class="callout trap"><span class="callout-icon"></span><div><strong>PDB + rolling update math:</strong> 4 replicas, maxUnavailable: 2, PDB minAvailable: 3. Update tries to kill 2 → only 2 left → violates PDB → rollout <strong>HANGS</strong>. Always check: replicas minus maxUnavailable must be ≥ minAvailable.</div></div>
+
+    <h3>Ingress vs Gateway API</h3>
+    <div class="compare">
+      <div class="compare-row">
+        <div class="compare-cell head">Ingress</div>
+        <div class="compare-cell head">Gateway API</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">
+          <ul>
+            <li>L7 HTTP routing, vendor annotations</li>
+            <li>No native traffic weighting</li>
+            <li>One LB for all services</li>
+            <li>Legacy — still widely used</li>
+          </ul>
+        </div>
+        <div class="compare-cell">
+          <ul>
+            <li>GatewayClass / Gateway / HTTPRoute split</li>
+            <li>Native traffic weighting for canary</li>
+            <li>Supports TCP/UDP, not just HTTP</li>
+            <li>Infra team owns Gateway, app team owns HTTPRoute</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="callout golden"><span class="callout-icon"></span><div>Use <strong>Gateway API for canary</strong> — HTTPRoute weight splitting is native. Ingress requires annotation hacks that differ per vendor.</div></div>
+
+    <h3>Key Debugging Commands</h3>
+    <ul class="cmd-list">
+      <li><span class="cmd">kubectl get endpoints svc-name</span><span class="cmd-desc">FIRST command for any connectivity issue. Empty = no pods match selector.</span></li>
+      <li><span class="cmd">kubectl get networkpolicy -n ns</span><span class="cmd-desc">Silent packet drops. Firewall is invisible by design.</span></li>
+      <li><span class="cmd">kubectl describe hpa</span><span class="cmd-desc">Check ScalingActive=False and metrics errors.</span></li>
+      <li><span class="cmd">kubectl top pods</span><span class="cmd-desc">Requires Metrics Server. If it fails, Metrics Server is down.</span></li>
+    </ul>
+  </section>
+
+  <!-- ───────────── SESSION 2 ───────────── -->
+  <section class="session" id="s2">
+    <div class="session-label">Session 02</div>
+    <div class="session-title">VPC &amp; Networking</div>
+    <div class="weight-badge">88% Interview Weight</div>
+
+    <h3>The 3 Facts Unique to GCP Networking</h3>
+    <ul class="fact-list">
+      <li><span class="fact-num">01</span><strong>VPC is GLOBAL, subnets are REGIONAL.</strong> One VPC spans all regions. VMs in different regions on the same VPC communicate via internal IPs with no extra config.</li>
+      <li><span class="fact-num">02</span><strong>Firewall rules are VPC-WIDE, applied via network TAGS on VMs</strong> — not attached to subnets. Write one rule, applied to every tagged VM everywhere in the VPC.</li>
+      <li><span class="fact-num">03</span><strong>Every subnet talks to every other subnet BY DEFAULT.</strong> Absence of a firewall rule = allow. Use firewall rules to restrict, not to enable.</li>
+    </ul>
+
+    <h3>Firewall Rules — Priority Wins</h3>
+    <p>Direction: INGRESS or EGRESS. Action: ALLOW or DENY. Priority: 0–65534. Lower number = higher priority.</p>
+    <div class="callout trap"><span class="callout-icon"></span><div><strong>Priority 800 DENY beats Priority 1200 ALLOW.</strong> Lower number ALWAYS wins regardless of specificity. Default rules sit at 65534 — any rule you add overrides them.</div></div>
+
+    <h3>Cloud NAT vs Private Google Access</h3>
+    <div class="compare">
+      <div class="compare-row">
+        <div class="compare-cell head">Private Google Access</div>
+        <div class="compare-cell head">Cloud NAT</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">
+          <ul>
+            <li>For: GCP APIs (BigQuery, GCS, Secret Manager)</li>
+            <li>Enabled: per SUBNET — one flag</li>
+            <li>Traffic stays on Google backbone</li>
+            <li>No Cloud Router needed</li>
+            <li>Use: any VM/pod needing GCP APIs without external IP</li>
+          </ul>
+        </div>
+        <div class="compare-cell">
+          <ul>
+            <li>For: general internet outbound (apt-get, Stripe API)</li>
+            <li>Requires: Cloud Router first, then NAT gateway</li>
+            <li>Outbound ONLY — no inbound connections possible</li>
+            <li>One router+NAT covers all subnets in a region</li>
+            <li>Use: VMs with no external IP needing internet egress</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="callout golden"><span class="callout-icon"></span><div><strong>PGA = GCP API back door per subnet. Cloud NAT = outbound internet post office per region.</strong> Both often used together. Neither enables inbound connections from internet.</div></div>
+
+    <h3>VPC Peering vs Shared VPC</h3>
+    <div class="compare">
+      <div class="compare-row">
+        <div class="compare-cell head">VPC Peering</div>
+        <div class="compare-cell head">Shared VPC</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">
+          <ul>
+            <li>Connects two VPCs directly</li>
+            <li>Non-transitive: A–B, B–C does NOT mean A–C</li>
+            <li>Each VPC independently managed</li>
+            <li>For: different orgs, teams needing full autonomy</li>
+            <li>CIDR ranges must NOT overlap</li>
+          </ul>
+        </div>
+        <div class="compare-cell">
+          <ul>
+            <li>Host project owns VPC, subnets, firewall rules</li>
+            <li>Service projects deploy VMs into host VPC</li>
+            <li>App team cannot touch network config</li>
+            <li>For: same org, central network governance</li>
+            <li>Solves governance — NOT environment isolation</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="callout trap"><span class="callout-icon"></span><div><strong>No peering = environment isolation</strong> (prod can't reach dev). <strong>Shared VPC = network governance</strong> (app team can't misconfigure prod). Two completely different problems. You need both in a fintech setup.</div></div>
+
+    <h3>OS Login</h3>
+    <p>Links SSH access to Google identity instead of raw key files. Offboarding = suspend Google account → SSH revoked on ALL VMs instantly.</p>
+    <div class="services">
+      <span class="svc-tag blue">roles/compute.osLogin → SSH without sudo</span>
+      <span class="svc-tag green">roles/compute.osAdminLogin → SSH with sudo</span>
+      <span class="svc-tag warn">enable-oslogin-2fa=TRUE → MFA</span>
+      <span class="svc-tag purple">constraints/compute.requireOsLogin → Enforce everywhere</span>
+    </div>
+    <div class="callout golden"><span class="callout-icon"></span><div>OS Login → short-lived certificates tied to Google identity. No key to rotate, no key to leak, no manual offboarding. The CISO's favourite feature.</div></div>
+  </section>
+
+  <!-- ───────────── SESSION 3 ───────────── -->
+  <section class="session" id="s3">
+    <div class="session-label">Session 03</div>
+    <div class="session-title">IAM</div>
+    <div class="weight-badge">85% Interview Weight</div>
+
+    <div class="callout golden" style="margin-top:0"><span class="callout-icon"></span><div><strong>IAM = WHO (identity) can do WHAT (role) on WHICH (resource).</strong> Everything in IAM is a binding of these three things.</div></div>
+
+    <h3>Primitive vs Predefined vs Custom Roles</h3>
+    <div class="compare">
+      <div class="compare-row three">
+        <div class="compare-cell head">Primitive — AVOID</div>
+        <div class="compare-cell head">Predefined — USE THESE</div>
+        <div class="compare-cell head">Custom — Advanced</div>
+      </div>
+      <div class="compare-row three">
+        <div class="compare-cell">
+          <ul>
+            <li>roles/owner, roles/editor, roles/viewer</li>
+            <li>Project-wide, overprivileged</li>
+            <li>Never in production</li>
+          </ul>
+        </div>
+        <div class="compare-cell">
+          <ul>
+            <li>roles/storage.objectViewer</li>
+            <li>roles/bigquery.dataViewer</li>
+            <li>roles/container.developer</li>
+            <li>Service-specific, granular</li>
+          </ul>
+        </div>
+        <div class="compare-cell">
+          <ul>
+            <li>Curate exact permissions</li>
+            <li>Maintenance overhead</li>
+            <li>GCP won't auto-add new permissions</li>
+            <li>Use sparingly when predefined doesn't fit</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="callout trap"><span class="callout-icon"></span><div><strong>dataViewer alone cannot run BigQuery queries.</strong> Need jobUser too — at PROJECT level (not dataset level, because jobs are project-level resources). Always grant both.</div></div>
+
+    <h3>Service Accounts</h3>
+    <p>A service account is both an <strong>IDENTITY</strong> (grant it roles to access resources) and a <strong>RESOURCE</strong> (grant roles ON it to allow impersonation).</p>
+    <ul class="fact-list">
+      <li><span class="fact-num">UA</span><strong>User-managed SA:</strong> you create. Use for your workloads.</li>
+      <li><span class="fact-num">DC</span><strong>Default Compute SA:</strong> auto-created with roles/editor — DANGEROUS. Always restrict or replace.</li>
+      <li><span class="fact-num">GM</span><strong>Google-managed SA:</strong> internal GCP use. Never touch these.</li>
+    </ul>
+    <div class="callout trap"><span class="callout-icon"></span><div><strong>Default Compute Engine SA has roles/editor on the project.</strong> Every pod on that GKE node inherits this. One compromised pod = full project access. Always create a minimal custom SA for node pools.</div></div>
+
+    <h3>Workload Identity Federation — External Systems</h3>
+    <p>GitHub Actions / AWS / Azure needing GCP access. Old way: SA key file → leaks, never rotates. New way: WIF exchanges OIDC tokens for short-lived GCP tokens. No SA keys anywhere.</p>
+
+    <h3>Org Policy vs IAM</h3>
+    <div class="compare">
+      <div class="compare-row">
+        <div class="compare-cell head">IAM</div>
+        <div class="compare-cell head">Org Policy</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">
+          <ul>
+            <li>Controls WHO can perform actions</li>
+            <li>Identity-based</li>
+            <li>Can be granted/revoked</li>
+            <li>Example: Alice has no permission to create VM with external IP</li>
+          </ul>
+        </div>
+        <div class="compare-cell">
+          <ul>
+            <li>Controls WHAT configurations can exist</li>
+            <li>Resource-based, API-level enforcement</li>
+            <li>Trumps IAM — even roles/owner cannot bypass</li>
+            <li>Example: NOBODY can create VM with external IP</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="callout golden"><span class="callout-icon"></span><div><strong>Org Policy > IAM. Always.</strong> For hard requirements (no external IPs, no SA keys, data residency) use Org Policy — enforced at the API level, unforgeable.</div></div>
+
+    <h3>Audit Logs</h3>
+    <ul class="fact-list">
+      <li><span class="fact-num">AA</span><strong>Admin Activity</strong> — always on, free. IAM changes, resource creation/deletion.</li>
+      <li><span class="fact-num">DA</span><strong>Data Access</strong> — off by default, costs money. Who read secrets, queried BQ, accessed GCS. Enable for PCI/GDPR/SOC2.</li>
+      <li><span class="fact-num">SE</span><strong>System Event</strong> — always on, free. GCP internal operations (live migration, auto-scaling).</li>
+    </ul>
+
+    <h3>Key Org Policy Constraints</h3>
+    <ul class="constraint-list">
+      <li><span class="key">constraints/compute.vmExternalIpAccess</span><span class="val">→ DENY — no external IPs on VMs</span></li>
+      <li><span class="key">constraints/iam.disableServiceAccountKeyCreation</span><span class="val">→ ENFORCE — force Workload Identity</span></li>
+      <li><span class="key">constraints/compute.requireOsLogin</span><span class="val">→ ENFORCE — no raw SSH key files</span></li>
+      <li><span class="key">constraints/gcp.resourceLocations</span><span class="val">→ allowedValues — GDPR data residency</span></li>
+    </ul>
+  </section>
+
+  <!-- ───────────── SESSION 5 (BQ) ───────────── -->
+  <section class="session" id="s5">
+    <div class="session-label">Session 04</div>
+    <div class="session-title">BigQuery</div>
+    <div class="weight-badge">75% Interview Weight</div>
+
+    <div class="callout golden" style="margin-top:0"><span class="callout-icon"></span><div>BigQuery is <strong>NOT a database</strong>. It is a serverless columnar analytical engine (data warehouse). It scans columns, not rows. It charges per byte scanned, not per query time. This single fact drives every design decision.</div></div>
+    <div class="callout trap"><span class="callout-icon"></span><div><strong>SELECT * FROM huge_table = scans EVERY column = massive bill.</strong> Always SELECT only the columns you need. The single most common BigQuery cost mistake in every organisation.</div></div>
+
+    <h3>Partitioning vs Clustering</h3>
+    <div class="compare">
+      <div class="compare-row">
+        <div class="compare-cell head">Partitioning</div>
+        <div class="compare-cell head">Clustering</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">
+          <ul>
+            <li>Physically splits data into segments</li>
+            <li>Query skips entire partitions (pruning)</li>
+            <li>1 column max: time / range / ingestion</li>
+            <li>Exact cost estimate before running</li>
+            <li>Set requirePartitionFilter=true on large tables</li>
+          </ul>
+        </div>
+        <div class="compare-cell">
+          <ul>
+            <li>Sorts blocks within each partition</li>
+            <li>Query skips non-matching blocks</li>
+            <li>Up to 4 columns</li>
+            <li>Approximate cost estimate before running</li>
+            <li>Always combine with partitioning for double pruning</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="callout golden"><span class="callout-icon"></span><div><strong>Partition by date, cluster by user_id.</strong> Filter on both = skip entire date partitions first, then skip blocks within the remaining partition. Scan 2GB instead of 10TB.</div></div>
+
+    <h3>Views vs Materialized Views</h3>
+    <div class="compare">
+      <div class="compare-row">
+        <div class="compare-cell head">Regular View</div>
+        <div class="compare-cell head">Materialized View</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">
+          <ul>
+            <li>Saved SQL query — no stored data</li>
+            <li>Re-executes full query every time</li>
+            <li>Always fresh, always slow on large tables</li>
+            <li>Use for: simple abstractions, small data</li>
+          </ul>
+        </div>
+        <div class="compare-cell">
+          <ul>
+            <li>Pre-computed, stored result</li>
+            <li>Auto-refreshed on schedule</li>
+            <li>Fast and cheap to query</li>
+            <li>Can serve stale data between refreshes</li>
+            <li>Use for: heavy aggregations, dashboards</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h3>Streaming vs Batch</h3>
+    <div class="compare">
+      <div class="compare-row">
+        <div class="compare-cell head">Streaming Inserts</div>
+        <div class="compare-cell head">Batch Loads (from GCS)</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">
+          <ul>
+            <li>Available in seconds</li>
+            <li>$0.01 per 200MB inserted — costs money</li>
+            <li>For: real-time dashboards, event pipelines</li>
+            <li>No updates/deletes for 30 min after insert</li>
+          </ul>
+        </div>
+        <div class="compare-cell">
+          <ul>
+            <li>FREE — no charge</li>
+            <li>CSV, Parquet, Avro, ORC</li>
+            <li>For: ETL pipelines, daily data loads</li>
+            <li>Prefer batch unless real-time is genuinely required</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h3>Cost Control</h3>
+    <ul class="cmd-list">
+      <li><span class="cmd">bq query --dry_run</span><span class="cmd-desc">See bytes scanned before spending a cent</span></li>
+      <li><span class="cmd">--maximum_bytes_billed=1000000000</span><span class="cmd-desc">Safety net — query fails if it would exceed limit</span></li>
+      <li><span class="cmd">requirePartitionFilter=true</span><span class="cmd-desc">Analysts cannot accidentally full-scan large tables</span></li>
+      <li><span class="cmd">INFORMATION_SCHEMA.JOBS_BY_PROJECT</span><span class="cmd-desc">Find expensive queries daily</span></li>
+    </ul>
+
+    <h3>Slots &amp; Reservations</h3>
+    <p>One slot = one unit of compute doing query work. On-demand: up to 2,000 shared slots per project. Reservations: buy dedicated slots, divide between teams via assignments.</p>
+    <div class="callout trap"><span class="callout-icon"></span><div><strong>Slow queries during business hours, fast at night = slot contention.</strong> You're competing in the shared pool. Buy a reservation and assign it to your project for guaranteed performance.</div></div>
+  </section>
+
+  <!-- ───────────── SESSION 4 (PubSub) ───────────── -->
+  <section class="session" id="s4">
+    <div class="session-label">Session 05</div>
+    <div class="session-title">Pub/Sub</div>
+    <div class="weight-badge">70% Interview Weight</div>
+
+    <p>Pub/Sub = asynchronous messaging. Producer publishes once. Each subscription gets its own independent copy. One slow consumer never affects others.</p>
+    <ul class="fact-list">
+      <li><span class="fact-num">T</span><strong>Topic:</strong> the channel. Publishers send here.</li>
+      <li><span class="fact-num">S</span><strong>Subscription:</strong> how consumers receive. Each gets ALL messages independently.</li>
+      <li><span class="fact-num">FO</span><strong>Fan-out:</strong> one topic + N subscriptions = every message goes to all N consumers. Add a 6th subscriber = zero code change in publisher.</li>
+    </ul>
+
+    <h3>Push vs Pull</h3>
+    <div class="compare">
+      <div class="compare-row">
+        <div class="compare-cell head">Pull</div>
+        <div class="compare-cell head">Push</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">
+          <ul>
+            <li>Consumer asks for messages when ready</li>
+            <li>Natural backpressure — pull when you can process</li>
+            <li>For: GKE workers, Dataflow, high-throughput batch</li>
+            <li>Consumer controls the rate</li>
+          </ul>
+        </div>
+        <div class="compare-cell">
+          <ul>
+            <li>Pub/Sub delivers to HTTPS endpoint</li>
+            <li>For: Cloud Run, Cloud Functions, event-driven serverless</li>
+            <li>Pub/Sub controls the rate</li>
+            <li>200–204 = ACK · 4xx/5xx = NACK → retry</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="callout trap"><span class="callout-icon"></span><div><strong>Push has no natural backpressure.</strong> If your endpoint is slow, Pub/Sub keeps pushing. Pull naturally handles backpressure — consumer controls what it can handle.</div></div>
+
+    <h3>ACK, NACK, ACK Deadline</h3>
+    <p>After pulling a message, the ACK deadline clock starts (default 10s). Must ACK or NACK before expiry. Deadline expires → Pub/Sub redelivers → duplicate processing.</p>
+    <ul class="fact-list">
+      <li><span class="fact-num">ACK</span>Processed successfully, delete it</li>
+      <li><span class="fact-num">NACK</span>Failed temporarily, redeliver immediately</li>
+      <li><span class="fact-num">∅</span>Deadline expires → automatic redeliver to any available subscriber</li>
+    </ul>
+    <div class="callout trap"><span class="callout-icon"></span><div><strong>NACK on a permanent error = infinite retry loop.</strong> ACK permanently broken messages, then handle the error separately (log, DLQ, alert). Never NACK something that will always fail.</div></div>
+
+    <h3>Dead Letter Topics &amp; Ordering</h3>
+    <ul class="fact-list">
+      <li><span class="fact-num">DLT</span>After N failed delivery attempts, message moves automatically. Always set <strong>max-delivery-attempts</strong> (e.g. 5). Monitor: a spike = something broke in your consumer.</li>
+      <li><span class="fact-num">ORD</span>Ordering keys: same key = same order delivered. Enable <strong>--enable-message-ordering</strong> on subscription.</li>
+      <li><span class="fact-num">HOL</span><strong>Head-of-line blocking:</strong> failed message with ordering key blocks ALL subsequent messages with same key.</li>
+      <li><span class="fact-num">EO</span><strong>Exactly-once:</strong> enable per subscription, pull only, higher cost. Use for financial transactions.</li>
+    </ul>
+  </section>
+
+  <!-- ───────────── SESSION 6 ───────────── -->
+  <section class="session" id="s6">
+    <div class="session-label">Session 06</div>
+    <div class="session-title">Cloud Storage &amp; Databases</div>
+    <div class="weight-badge">68% Interview Weight</div>
+
+    <h3>The Decision Flowchart</h3>
+    <div class="decision-flow">
+      <div class="flow-step"><span class="flow-num">Step 1</span><span class="flow-text">Need SQL (joins, ACID)? <strong>YES →</strong> Cloud SQL or Spanner. <strong>NO →</strong> Firestore, Bigtable, or Memorystore.</span></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step"><span class="flow-num">Step 2</span><span class="flow-text">If SQL — Need global scale or horizontal write scaling? <strong>YES →</strong> Spanner. <strong>NO →</strong> Cloud SQL (10× cheaper).</span></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step"><span class="flow-num">Step 3</span><span class="flow-text">If NoSQL — Documents / flexible schema <strong>→</strong> Firestore. Time-series / high throughput <strong>→</strong> Bigtable. Just caching <strong>→</strong> Memorystore.</span></div>
+    </div>
+
+    <h3>The Database Matrix</h3>
+    <div class="db-grid">
+      <div class="db-card">
+        <div class="db-name">Cloud SQL</div>
+        <ul>
+          <li>Managed MySQL/PostgreSQL</li>
+          <li>Single region, vertical scale</li>
+          <li>HA = standby replica (not readable)</li>
+          <li>Read replica = readable, for scale</li>
+          <li>For: web apps, CMS, ERP, &lt;10TB</li>
+        </ul>
+      </div>
+      <div class="db-card">
+        <div class="db-name">Cloud Spanner</div>
+        <ul>
+          <li>Global SQL + ACID + horizontal write scale</li>
+          <li>Virtually unlimited scale</li>
+          <li>~$2,000/month minimum — expensive</li>
+          <li>For: fintech, global inventory, multi-region</li>
+          <li>Never for: small or cost-sensitive workloads</li>
+        </ul>
+      </div>
+      <div class="db-card">
+        <div class="db-name">Firestore</div>
+        <ul>
+          <li>Serverless NoSQL document store</li>
+          <li>Real-time client sync — UNIQUE to Firestore</li>
+          <li>Offline support built-in</li>
+          <li>For: mobile/web apps, user profiles, game state</li>
+          <li>Limit: 1 write/sec per document</li>
+        </ul>
+      </div>
+      <div class="db-card">
+        <div class="db-name">Bigtable</div>
+        <ul>
+          <li>Petabyte-scale wide-column NoSQL</li>
+          <li>Time-series, IoT sensor data, ML features</li>
+          <li>Row key design is EVERYTHING</li>
+          <li>No SQL, no joins, no ad-hoc queries</li>
+          <li>For: sensor readings, financial tick data</li>
+        </ul>
+      </div>
+      <div class="db-card">
+        <div class="db-name">Memorystore</div>
+        <ul>
+          <li>Managed Redis / Memcached</li>
+          <li>Microsecond latency reads</li>
+          <li>NEVER primary storage — cache only</li>
+          <li>Always have a durable backing store</li>
+          <li>For: sessions, API cache, rate limiting</li>
+        </ul>
+      </div>
+      <div class="db-card">
+        <div class="db-name">GCS Storage Classes</div>
+        <ul>
+          <li>Standard: hot, frequent access</li>
+          <li>Nearline: monthly access</li>
+          <li>Coldline: quarterly access</li>
+          <li>Archive: yearly, highest retrieval cost</li>
+          <li>Lifecycle policies automate transitions</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout trap"><span class="callout-icon"></span><div><strong>Bigtable row key:</strong> sequential timestamps as the ONLY key = all current writes hit one tablet = hotspot. Use <strong>device_id#reverse_timestamp</strong> to distribute writes AND support time-range queries per device.</div></div>
+
+    <h3>GCS Key Concepts</h3>
+    <ul class="fact-list">
+      <li><span class="fact-num">UBA</span><strong>Uniform bucket-level access:</strong> always use. IAM is the single control. Fine-grained ACL = legacy, avoid.</li>
+      <li><span class="fact-num">OV</span><strong>Object versioning:</strong> every overwrite creates a new version. Add lifecycle policy to expire old versions.</li>
+      <li><span class="fact-num">RL</span><strong>Retention locks:</strong> prevent deletion before duration — even bucket owners can't delete. WORM compliance.</li>
+      <li><span class="fact-num">LC</span><strong>Lifecycle policies:</strong> set on day 1. Standard → Nearline (30d) → Coldline (90d) → Delete (365d).</li>
+    </ul>
+  </section>
+
+  <!-- ───────────── SESSION 7 ───────────── -->
+  <section class="session" id="s7">
+    <div class="session-label">Session 07</div>
+    <div class="session-title">Compute Engine &amp; Cloud Run</div>
+    <div class="weight-badge">62% Interview Weight</div>
+
+    <h3>The Compute Decision</h3>
+    <div class="compare">
+      <div class="compare-row three">
+        <div class="compare-cell head">Compute Engine</div>
+        <div class="compare-cell head">GKE</div>
+        <div class="compare-cell head">Cloud Run</div>
+      </div>
+      <div class="compare-row three">
+        <div class="compare-cell">
+          <ul>
+            <li>Full OS control needed</li>
+            <li>GPU / TPU / custom hardware</li>
+            <li>Legacy apps, can't containerize</li>
+            <li>MIG for VM autoscaling</li>
+            <li>Spot VMs: 80% cheaper, fault-tolerant</li>
+          </ul>
+        </div>
+        <div class="compare-cell">
+          <ul>
+            <li>Containerized + K8s features</li>
+            <li>DaemonSets, StatefulSets, PVCs</li>
+            <li>Complex microservices platform</li>
+            <li>Long-running services</li>
+            <li>When Cloud Run isn't enough</li>
+          </ul>
+        </div>
+        <div class="compare-cell">
+          <ul>
+            <li>Stateless containers, serverless</li>
+            <li>Event-driven or HTTP services</li>
+            <li>Zero infra management</li>
+            <li>Scale to zero = zero cost at idle</li>
+            <li>Simplest operational model</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h3>Machine Families</h3>
+    <ul class="fact-list">
+      <li><span class="fact-num">E2</span><strong>Economy, cheapest.</strong> Dev/test, low-traffic apps.</li>
+      <li><span class="fact-num">N2</span><strong>Balanced.</strong> Most production web workloads, app servers. Sweet spot.</li>
+      <li><span class="fact-num">C2</span><strong>Compute-optimised.</strong> Gaming servers, HPC, CPU-bound batch.</li>
+      <li><span class="fact-num">M3</span><strong>Memory-optimised, up to 12TB RAM.</strong> SAP HANA, large in-memory analytics.</li>
+      <li><span class="fact-num">A2</span><strong>GPU/TPU.</strong> ML training, CUDA workloads.</li>
+    </ul>
+
+    <h3>Cloud Run — Key Concepts</h3>
+    <div class="compare">
+      <div class="compare-row">
+        <div class="compare-cell head">Cold Starts</div>
+        <div class="compare-cell head">Concurrency</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">
+          <ul>
+            <li>min-instances=0: scales to zero, zero idle cost</li>
+            <li>First request after idle = 1–10s latency spike</li>
+            <li>Fix: min-instances=1 (keep one always warm)</li>
+            <li>For prod APIs: always set min-instances=1</li>
+            <li>Reduce: smaller images, lazy dependency loading</li>
+          </ul>
+        </div>
+        <div class="compare-cell">
+          <ul>
+            <li>One instance handles N simultaneous requests</li>
+            <li>I/O-bound (DB queries, API calls): concurrency=80+</li>
+            <li>CPU-bound (image processing): concurrency=1</li>
+            <li>High concurrency = fewer instances = lower cost</li>
+            <li>Default: 80</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="callout trap"><span class="callout-icon"></span><div><strong>concurrency=1000 on a CPU-bound service = 1000 requests sharing one CPU = overloaded instance.</strong> CPU-bound: concurrency=1, let autoscaler add instances instead.</div></div>
+
+    <h3>Cloud Run Jobs vs Services</h3>
+    <div class="compare">
+      <div class="compare-row">
+        <div class="compare-cell head">Cloud Run Service</div>
+        <div class="compare-cell head">Cloud Run Job</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell">
+          <ul>
+            <li>Long-running HTTP server</li>
+            <li>Scales with incoming requests</li>
+            <li>Never 'finishes' — always listening</li>
+            <li>For: APIs, webhooks, microservices</li>
+          </ul>
+        </div>
+        <div class="compare-cell">
+          <ul>
+            <li>Runs to completion, then stops</li>
+            <li>Batch processing, migration, reports</li>
+            <li>Billed only for actual execution time</li>
+            <li>Replace cron VMs: 10min job on 24h VM = waste</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h3>Spot VMs</h3>
+    <p>Up to 80% cheaper than standard VMs. GCP can preempt with 30-second warning. Use for fault-tolerant workloads: ML training with checkpoints, batch data processing, CI/CD workers.</p>
+    <div class="callout trap"><span class="callout-icon"></span><div><strong>Never use Spot VMs for:</strong> databases, user-facing services, or anything that cannot survive sudden termination.</div></div>
+  </section>
+
+  <!-- ───────────── SESSION 8 ───────────── -->
+  <section class="session" id="s8">
+    <div class="session-label">Session 08</div>
+    <div class="session-title">Cloud Build &amp; CI/CD</div>
+    <div class="weight-badge">55% Interview Weight</div>
+
+    <h3>The Pipeline Flow</h3>
+    <div class="decision-flow">
+      <div class="flow-step"><span class="flow-num">01</span><span class="flow-text">Code push → <strong>Cloud Build trigger</strong></span></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step"><span class="flow-num">02</span><span class="flow-text"><strong>cloudbuild.yaml</strong> steps: build, test, scan, push</span></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step"><span class="flow-num">03</span><span class="flow-text"><strong>Artifact Registry</strong> → Binary Authorization attestation</span></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-step"><span class="flow-num">04</span><span class="flow-text"><strong>Cloud Deploy</strong> → GKE / Cloud Run / Terraform</span></div>
+    </div>
+
+    <h3>cloudbuild.yaml — Key Patterns</h3>
+    <ul class="fact-list">
+      <li><span class="fact-num">01</span>Each step runs in a Docker container — any public or private image is a valid build step</li>
+      <li><span class="fact-num">02</span>Built-in substitution vars: <strong>$PROJECT_ID · $COMMIT_SHA · $BRANCH_NAME · $TAG_NAME</strong></li>
+      <li><span class="fact-num">03</span>Parallel steps: <strong>waitFor: ['-']</strong> runs steps simultaneously — useful for parallel test suites</li>
+      <li><span class="fact-num">04</span>Machine types: <strong>options.machineType: E2_HIGHCPU_8</strong> for faster builds</li>
+    </ul>
+    <div class="callout trap"><span class="callout-icon"></span><div><strong>Never tag images as 'latest' in CI/CD.</strong> Use $COMMIT_SHA. 'latest' is mutable — you can't tell what's running in prod. $COMMIT_SHA is immutable — full traceability, safe rollback, audit compliance.</div></div>
+
+    <h3>Three-Pipeline Pattern</h3>
+    <ul class="fact-list">
+      <li><span class="fact-num">PR</span><strong>PR opened → CI pipeline:</strong> lint, unit tests, build image, scan. NO deploy. Fast feedback for developers.</li>
+      <li><span class="fact-num">MN</span><strong>Merge to main → Staging pipeline:</strong> build, Binary Authorization attest, deploy staging, integration tests.</li>
+      <li><span class="fact-num">TAG</span><strong>Git tag v1.2.3 → Release pipeline:</strong> pull already-built image, canary deploy to prod via Cloud Deploy, monitor.</li>
+    </ul>
+
+    <h3>Deployment Strategies</h3>
+    <div class="strategy-row">
+      <div class="strategy-card">
+        <div class="s-name">Rolling</div>
+        <ul>
+          <li>Replace pods gradually one by one</li>
+          <li>Both versions live simultaneously</li>
+          <li>Zero downtime, built into K8s</li>
+          <li>Slow rollback (pod by pod)</li>
+          <li>For: most stateless service updates</li>
+        </ul>
+      </div>
+      <div class="strategy-card">
+        <div class="s-name">Blue-Green</div>
+        <ul>
+          <li>Two identical environments</li>
+          <li>Instant all-or-nothing traffic switch</li>
+          <li>Instant rollback (flip selector back)</li>
+          <li>2× infra cost during switchover</li>
+          <li>For: breaking schema changes, type changes</li>
+        </ul>
+      </div>
+      <div class="strategy-card">
+        <div class="s-name">Canary</div>
+        <ul>
+          <li>Gradual traffic shift 10→50→100%</li>
+          <li>Real user traffic validation</li>
+          <li>Instant rollback (zero canary weight)</li>
+          <li>Cloud Run: built-in revision weights</li>
+          <li>Default choice for most deployments</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout golden"><span class="callout-icon"></span><div>Default to <strong>Canary</strong>. Switch to Blue-Green ONLY when v1 and v2 absolutely cannot coexist — breaking schema changes (column rename, type change), breaking API contracts.</div></div>
+
+    <h3>Expand/Contract — Make Schema Changes Canary-Safe</h3>
+    <ul class="fact-list">
+      <li><span class="fact-num">①</span><strong>EXPAND:</strong> add new column, keep old. Deploy v2 writing to BOTH. v1 still works. Canary deploy safely.</li>
+      <li><span class="fact-num">②</span><strong>MIGRATE:</strong> background job copies data from old column to new.</li>
+      <li><span class="fact-num">③</span><strong>CONTRACT:</strong> retire v1. DROP old column in a separate deployment.</li>
+    </ul>
+    <div class="callout golden"><span class="callout-icon"></span><div>Expand/Contract = <strong>3 deployments instead of 1</strong>, but zero downtime and zero risk. Always prefer over blue-green if you have time to plan it.</div></div>
+
+    <h3>Binary Authorization</h3>
+    <p>Cloud Build creates a cryptographic attestation after tests and vulnerability scans pass. GKE admission controller checks for valid attestation at deploy time. No attestation = deploy rejected.</p>
+    <div class="callout golden"><span class="callout-icon"></span><div>Binary Authorization = <strong>supply chain security</strong>. Even a developer with full kubectl access cannot deploy an unattested image. The attestation is tied to the image digest — unforgeable without the signing key.</div></div>
+
+    <h3>Artifact Registry &amp; Terraform</h3>
+    <ul class="fact-list">
+      <li><span class="fact-num">URL</span>Image URL: <strong>LOCATION-docker.pkg.dev/PROJECT_ID/REPO/IMAGE:COMMIT_SHA</strong></li>
+      <li><span class="fact-num">CLN</span>Set cleanup policies on day 1 — without them, builds accumulate and storage costs explode</li>
+      <li><span class="fact-num">SCAN</span>Enable vulnerability scanning: automatic on push when configured</li>
+      <li><span class="fact-num">TF</span>Terraform remote state: always GCS bucket, never local. Enables team collaboration and state locking.</li>
+      <li><span class="fact-num">PR</span>Plan on PR, apply on merge — humans review infra diffs before changes happen</li>
+    </ul>
+  </section>
+
+  <!-- ───────────── CHEATSHEET ───────────── -->
+  <section class="session" id="cheat">
+    <div class="session-label">Master Cheatsheet</div>
+    <div class="session-title">Read This Last Every Day</div>
+
+    <div class="cheat-section">
+      <h4>Decision Rules — Know These Instinctively</h4>
+      <ul class="rule-list">
+        <li><span class="arrow">→</span><span class="rule-text">Workload needs GCP API access → <strong>Workload Identity (GKE)</strong> or SA attachment (Cloud Run/CE)</span></li>
+        <li><span class="arrow">→</span><span class="rule-text">External system needs GCP access → <strong>Workload Identity Federation</strong>. No SA keys ever.</span></li>
+        <li><span class="arrow">→</span><span class="rule-text">Need SQL + global scale → <strong>Spanner</strong>. Need SQL + single region → <strong>Cloud SQL</strong> (10× cheaper).</span></li>
+        <li><span class="arrow">→</span><span class="rule-text">Need real-time client sync → <strong>Firestore</strong>. Only GCP service with this built-in.</span></li>
+        <li><span class="arrow">→</span><span class="rule-text">Need petabyte time-series → <strong>Bigtable</strong>. Design row key carefully — it is everything.</span></li>
+        <li><span class="arrow">→</span><span class="rule-text">New stateless HTTP service → <strong>Cloud Run</strong>. Complex stateful platform → GKE.</span></li>
+        <li><span class="arrow">→</span><span class="rule-text">Batch job replacing a cron VM → <strong>Cloud Run Jobs</strong>. Pay for execution, not idle time.</span></li>
+        <li><span class="arrow">→</span><span class="rule-text">DB schema change → <strong>Expand/Contract</strong> first. If impossible → Blue-Green.</span></li>
+        <li><span class="arrow">→</span><span class="rule-text">Everything else deployment → <strong>Canary</strong>. Always. It is the safest choice.</span></li>
+      </ul>
+    </div>
+
+    <div class="cheat-section">
+      <h4>Interview Traps — The Ones That Actually Get People</h4>
+      <ul class="trap-list">
+        <li><span class="marker">BQ</span><span class="trap-text"><strong>SELECT * scans ALL columns.</strong> Always SELECT only what you need.</span></li>
+        <li><span class="marker">BQ</span><span class="trap-text"><strong>dataViewer alone cannot run queries.</strong> Need jobUser too — at project level.</span></li>
+        <li><span class="marker">GKE</span><span class="trap-text"><strong>HPA + VPA Auto = infinite conflict.</strong> Use VPA in Off (recommendation) mode with HPA.</span></li>
+        <li><span class="marker">GKE</span><span class="trap-text"><strong>PDB + rolling update math must be compatible.</strong> Always check before deploying.</span></li>
+        <li><span class="marker">PS</span><span class="trap-text"><strong>NACK on permanent error = infinite retry loop.</strong> ACK it, handle error separately.</span></li>
+        <li><span class="marker">PS</span><span class="trap-text"><strong>ACK deadline default = 10 seconds.</strong> Long processing = extend or get duplicates.</span></li>
+        <li><span class="marker">VPC</span><span class="trap-text"><strong>Firewall priority — lower number wins.</strong> Always. Regardless of specificity.</span></li>
+        <li><span class="marker">VPC</span><span class="trap-text"><strong>VPC Peering is NOT transitive.</strong> A–B and B–C does not mean A–C.</span></li>
+        <li><span class="marker">IAM</span><span class="trap-text"><strong>Org Policy trumps IAM.</strong> Even roles/owner cannot violate an Org Policy constraint.</span></li>
+        <li><span class="marker">IAM</span><span class="trap-text"><strong>Default Compute SA has roles/editor.</strong> Never use for GKE node pools.</span></li>
+        <li><span class="marker">CR</span><span class="trap-text"><strong>Cold start = min-instances=0.</strong> Fix with min-instances=1 for prod APIs.</span></li>
+        <li><span class="marker">CD</span><span class="trap-text"><strong>Never tag images as 'latest'.</strong> Always use $COMMIT_SHA for immutability.</span></li>
+        <li><span class="marker">VPC</span><span class="trap-text"><strong>Shared VPC</strong> solves network governance within prod. <strong>No peering</strong> solves environment isolation. Different problems.</span></li>
+      </ul>
+    </div>
+
+    <div class="cheat-section">
+      <h4>Architect Frameworks</h4>
+      <ul class="arch-list">
+        <li>
+          <div class="arch-label">Multi-team GKE</div>
+          <div class="arch-flow">3 namespaces + default-deny NetworkPolicy + Workload Identity per team</div>
+        </li>
+        <li>
+          <div class="arch-label">Secure Cloud SQL</div>
+          <div class="arch-flow">private IP only + Cloud SQL Auth Proxy sidecar + IAM auth + VPC connector</div>
+        </li>
+        <li>
+          <div class="arch-label">Video processing</div>
+          <div class="arch-flow">GCS → Pub/Sub notification → Cloud Run Jobs (Spot VMs) → fan-out 3 formats parallel</div>
+        </li>
+        <li>
+          <div class="arch-label">IoT at scale</div>
+          <div class="arch-flow">Pub/Sub → Dataflow streaming → BigQuery (partitioned+clustered) + Bigtable for hot recent data</div>
+        </li>
+        <li>
+          <div class="arch-label">CI/CD pipeline</div>
+          <div class="arch-flow">PR=CI only → merge=staging → tag=canary prod via Cloud Deploy approval gate</div>
+        </li>
+        <li>
+          <div class="arch-label">Fintech prod</div>
+          <div class="arch-flow">Shared VPC + no peering to dev/staging + Org Policies + Data Access audit logs enabled</div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="callout golden"><span class="callout-icon"></span><div><strong>Depth beats breadth.</strong> One topic known cold beats five topics known superficially. GKE + VPC + IAM appear together in architecture rounds — study them as a system. You have done that. Now repeat until it is identity.</div></div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  GCP Mid-Level Engineer · Daily Read · 8 Sessions · All Traps · All Golden Rules
+</footer>
+
+</body>
+</html>
