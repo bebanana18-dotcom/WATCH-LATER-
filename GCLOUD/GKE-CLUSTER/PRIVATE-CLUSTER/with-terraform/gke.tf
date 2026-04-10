@@ -289,7 +289,7 @@ resource "google_container_cluster" "primary" {
   # Best practice: destroy the default node pool immediately and manage your
   # own via google_container_node_pool. Gives you full lifecycle control.
   remove_default_node_pool = false
-  initial_node_count       = 3 # Required placeholder; overridden by node pool
+  initial_node_count       = 1 # Required placeholder; overridden by node pool
 
   # REGULAR channel: tested releases, ~2 minor versions behind RAPID.
   # Good balance between stability and staying reasonably current.
