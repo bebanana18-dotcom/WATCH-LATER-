@@ -1275,3 +1275,278 @@ depends_on = explicit ordering when Terraform can't infer it
 ---
 
 *Notes from TWS Terraform Course | File: `TERRAFORM_NOTES.md`*
+
+
+---
+---
+---
+# FEW EXTRA THINGS 
+## 🧠 1. Dependency Handling (Implicit vs Explicit)
+
+### ✅ Concept:
+
+Terraform automatically determines dependencies through **resource references**.
+
+---
+
+### 💻 Example (Implicit dependency):
+
+```hcl
+resource "google_compute_network" "vpc" {
+  name = "my-vpc"
+}
+
+resource "google_compute_subnetwork" "subnet" {
+  name          = "my-subnet"
+  network       = google_compute_network.vpc.id
+  ip_cidr_range = "10.0.0.0/24"
+}
+```
+
+👉 No `depends_on` needed.
+
+---
+
+### ⚠️ When to use `depends_on`:
+
+```hcl
+resource "google_project_iam_member" "binding" {
+  member = "serviceAccount:my-sa@project.iam.gserviceaccount.com"
+
+  depends_on = [google_service_account.sa]
+}
+```
+
+---
+
+### 🧠 Rule:
+
+> Prefer references over `depends_on`
+
+---
+
+# 🧠 2. `terraform state rm`
+
+### ✅ Concept:
+
+Removes a resource **from state only**, without deleting actual infrastructure.
+
+---
+
+### 💻 Example:
+
+```bash
+terraform state rm google_compute_instance.vm
+```
+
+👉 Resource still exists in GCP
+👉 Terraform stops managing it
+
+---
+
+### ⚠️ Compare:
+
+* `state rm` → forget resource
+* `taint` → recreate resource
+
+---
+
+# 🧠 3. Terraform Plan Symbol `-/+`
+
+### ✅ Concept:
+
+`-/+` means **resource will be destroyed and recreated**
+
+---
+
+### 💻 Example plan:
+
+```
+-/+ resource "google_compute_instance" "vm"
+```
+
+---
+
+### 🧠 Meaning:
+
+* `-` → destroy
+* `+` → create
+
+👉 Replacement (not update)
+
+---
+
+# 🧠 4. Resource Attribute Navigation
+
+### ✅ Concept:
+
+Attributes must be accessed **exactly**, not guessed.
+
+---
+
+### 💻 Example:
+
+```hcl
+# Network
+network = google_compute_instance.vm.network_interface[0].network
+
+# Internal IP
+internal_ip = google_compute_instance.vm.network_interface[0].network_ip
+
+# External IP
+external_ip = google_compute_instance.vm.network_interface[0].access_config[0].nat_ip
+```
+
+---
+
+### 🧠 Rule:
+
+> Read provider docs—don’t assume attribute names
+
+---
+
+# 🧠 5. Provisioners Usage
+
+### ✅ Concept:
+
+Use provisioners **only as a last resort**
+
+---
+
+### ❌ Not recommended:
+
+```hcl
+provisioner "remote-exec" {
+  command = "install nginx"
+}
+```
+
+---
+
+### ✅ Better approach (GCP startup script):
+
+```hcl
+resource "google_compute_instance" "vm" {
+  metadata_startup_script = <<-EOT
+    #!/bin/bash
+    apt update
+    apt install -y nginx
+  EOT
+}
+```
+
+---
+
+### 🧠 Rule:
+
+> Prefer cloud-native solutions over provisioners
+
+---
+
+# 🧠 6. Sensitive Variables
+
+### ✅ Concept:
+
+Mark variables as sensitive to hide them in output
+
+---
+
+### 💻 Example:
+
+```hcl
+variable "password" {
+  type      = string
+  sensitive = true
+}
+```
+
+---
+
+### ⚠️ Important:
+
+* Hides in CLI output
+* Does NOT encrypt state
+
+---
+
+# 🧠 7. `null_resource`
+
+### ✅ Concept:
+
+Used to run provisioners without creating real infrastructure
+
+---
+
+### 💻 Example:
+
+```hcl
+resource "null_resource" "example" {
+  provisioner "local-exec" {
+    command = "echo Hello"
+  }
+}
+```
+
+---
+
+### 💻 With trigger:
+
+```hcl
+resource "null_resource" "always_run" {
+  triggers = {
+    run = timestamp()
+  }
+
+  provisioner "local-exec" {
+    command = "echo Running again"
+  }
+}
+```
+
+---
+
+### 🧠 Rule:
+
+> Useful, but don’t overuse
+
+---
+
+# 🧠 8. `locals`
+
+### ✅ Concept:
+
+Reusable values within a module
+
+---
+
+### 💻 Example:
+
+```hcl
+locals {
+  env         = "dev"
+  name_prefix = "myapp-${local.env}"
+}
+```
+
+---
+
+### Usage:
+
+```hcl
+resource "google_compute_instance" "vm" {
+  name = "${local.name_prefix}-vm"
+}
+```
+
+---
+
+### 🧠 Rule:
+
+* `variable` → input
+* `local` → internal logic
+
+---
+---
+---
+
+
