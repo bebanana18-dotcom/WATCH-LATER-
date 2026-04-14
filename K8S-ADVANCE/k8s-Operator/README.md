@@ -310,15 +310,6 @@ Git → Controller → Kubernetes Cluster
 
 ![Image](https://images.openai.com/static-rsc-4/tfgclI8lwoQUFQUVf3klWZQGt4KbkWaJuEJwxOpp8mL2aoVYpBZ2LXLrL4cP9XNHGdcDAAjU93iXtdZqhZDsNVVLIurv45b1CGG6ezo3tRlxV2aRhvkIxzbXpaXtTg0tllOATSkujTAKplUZ-W68EmS9Q8L_2Z3Pu1kuKarKFJ7yHCnG0dBNT_7r6fTGkczW?purpose=fullsize)
 
-![Image](https://images.openai.com/static-rsc-4/xjJ-yAhcTix9mjhxl7kkx0xlhnIOE1aOznlJ1Uo2tKpn_Jk9apGs5mmUi4-C4qprSA7PTQy2rUSH7cnDWe8Uf__KI7DN6C4hM-7Ll-lf02vP1DUIhk-ADrOoZqUf9bukVe3NBqTBoDeXbLrcfIM_QTaI2jbxJeyjftn5lr4RkUgkCKYBGjCV8ZJsNJszB3Wj?purpose=fullsize)
-
-![Image](https://images.openai.com/static-rsc-4/T6sym7dvFQZTWPno9VLln5RB0Ogqlxhb2KYDc7OCXr1JmiUlCZ6bWms5A4yA0uFhEEToZYQHtEgbN-buuVt-00Wlkvym_Y1ceXyQK29YmSBQg-MZ8xc6TU6u0Mwn7CAk6yTbS3QvmPosvjvAs0QlRipWfwe7bYyGF0l6ZNVGkwW1ent4c6sOxc5amIHSlHE0?purpose=fullsize)
-
-![Image](https://images.openai.com/static-rsc-4/n3qMApGGTY2dmsSMw_LO4yHkUy90EnZvZ-bMN69Uj4UxSNWPt84ISCvnIcRZil5zQexq-EP9WV_xekZ5Ammfz6PpsV-9j_zEr9NvRF9BMPIJfUjL2ys24QTQZz7Xtg3F14ehW757F-kUztLDZMy9W6k09C-QGXror8T_N_f_V4vSEF1YBp3mXCWfNo_S85On?purpose=fullsize)
-
-![Image](https://images.openai.com/static-rsc-4/UYRIVE5M-97vuhthb8jhJsqgsUBPN_vA5tp56BrXj0jhhBCHQrEO9XT78zEyrm2VHrGZXpnyKDlvV6m4qJdEDYx_E5Kmkkf2lwSIv-11o0SYPW65Bun1IuOGJpcSthVH9tQBqd0gzMBD9jJbX2zSGbpiuASF3g6QwFAQPYQZmtZIulKE5UusrXThWhSIEquU?purpose=fullsize)
-
-![Image](https://images.openai.com/static-rsc-4/nzDDnMRjzJUHR6sIPHigQu365FSKRrgegC-Z4erOcI3mnqfbgDqXLc0W9IWnTKvwDvRapQcMNf7LvAWiotLxP_o2XtSA7WHaOPca9yzSbIs2TqElT18Pp39cd218s7e5j0MQgf-rBqG6B3NjJZQIIyZMxBMO0ExzzqRbs_vcYhY0P7yu_3dW_paipfczcyIS?purpose=fullsize)
 
 You often have:
 
