@@ -1,33 +1,61 @@
-#K8s EVENTS
 
-## 🧠 What Events actually are
-
-Events are:
-
-> “A timeline of decisions Kubernetes made about your resources.”
-
-They answer:
-
-* Why did my pod restart?
-* Why didn’t it schedule?
-* Who killed it?
-* What is Kubernetes trying to tell me (passive-aggressively)?
+# ⚡ Kubernetes Events — Complete DevOps Notes (Updated)
 
 ---
 
-# 🔍 First command (your new reflex)
+## 🧠 What Events Actually Are
+
+> **Events = Kubernetes decision log (short-lived, high-signal)**
+
+They answer:
+
+* Why did my pod fail?
+* Why didn’t it schedule?
+* Why was it restarted/killed?
+* What is Kubernetes *trying* to tell me?
+
+👉 Think:
+**Events = “Why K8s acted”**
+**Logs = “What app did”**
+
+---
+
+## 🔍 Core Commands (Muscle Memory)
+
+### 📌 Get all events (sorted)
 
 ```bash
 kubectl get events --sort-by=.metadata.creationTimestamp
 ```
 
-👉 Always sort. Otherwise it’s chaos.
+---
+
+### 📌 Filter only warnings
+
+```bash
+kubectl get events --field-selector type=Warning
+```
 
 ---
 
-# 🎯 Narrow it down (important)
+### 📌 Watch events live (real-time debugging)
 
-## For a specific pod:
+```bash
+kubectl get events --watch
+```
+
+---
+
+### 📌 Events for specific resource
+
+```bash
+kubectl get events \
+  --field-selector involvedObject.name=<pod-name>
+```
+
+---
+
+### 📌 Deep dive (most important)
 
 ```bash
 kubectl describe pod <pod-name>
@@ -35,237 +63,337 @@ kubectl describe pod <pod-name>
 
 Scroll to:
 
-```text
+```
 Events:
 ```
 
-👉 This is where truth lives.
+👉 This is your **primary debugging signal**
 
 ---
 
-# 🧩 Anatomy of an Event
+## 🧩 Event Anatomy
 
 Example:
 
 ```text
-Warning  FailedScheduling  2m   default-scheduler  0/3 nodes available: insufficient memory
+Warning  FailedScheduling  2m  default-scheduler  
+0/3 nodes available: insufficient memory
 ```
 
-Break it down:
-
-| Field   | Meaning          |
-| ------- | ---------------- |
-| Type    | Normal / Warning |
-| Reason  | What happened    |
-| Age     | When             |
-| Source  | Who triggered it |
-| Message | Details          |
+| Field   | Meaning              |
+| ------- | -------------------- |
+| Type    | Normal / Warning     |
+| Reason  | What happened        |
+| Age     | When                 |
+| Source  | Who triggered it     |
+| Message | Detailed explanation |
 
 ---
 
-# 🔥 Common Event Patterns (learn these = instant debugging)
+## 🔥 High-Value Event Patterns (Memorize These)
 
 ---
 
-## 💣 1. FailedScheduling
+### 💣 FailedScheduling
 
 ```text
 0/3 nodes available: insufficient cpu
 ```
 
-👉 Pod can’t be placed
+👉 Pod cannot be placed
 
-### Causes:
+**Causes:**
 
-* Not enough resources
-* Node selectors / taints
+* Resource shortage
+* Taints / tolerations mismatch
+* Node affinity rules
+* Fragmented resources
 
 ---
 
-## 💀 2. CrashLoopBackOff
+### 💀 CrashLoopBackOff
 
 ```text
 Back-off restarting failed container
 ```
 
-👉 App crashing repeatedly
+👉 App is repeatedly crashing
 
 ---
 
-## 🔐 3. FailedMount
+### 🔐 FailedMount
 
 ```text
 Unable to mount volumes
 ```
 
-👉 ConfigMap / Secret / PVC issue
+👉 Issue with:
+
+* PVC
+* ConfigMap
+* Secret
+* Permissions
 
 ---
 
-## 🌐 4. FailedCreatePodSandBox
+### 🌐 FailedCreatePodSandBox
 
 ```text
 network plugin failed
 ```
 
-👉 CNI problem (network layer)
+👉 CNI / networking issue
 
 ---
 
-## 🔥 5. Unhealthy (probe failures)
+### 🔥 Unhealthy (Probe failures)
 
 ```text
 Liveness probe failed
 ```
 
-👉 Kubernetes is killing your pod
+👉 Kubernetes is killing your container
 
 ---
 
-## ⚠️ 6. ImagePullBackOff
+### ⚠️ ImagePullBackOff
 
 ```text
 Failed to pull image
 ```
 
-👉 Registry / auth / typo
+👉 Issues:
+
+* Wrong image name/tag
+* Registry auth failure
+* Image not found
 
 ---
 
-# 🕵️ Reading Events Like a Detective
+## 🕵️ Debugging Scenarios (Real Thinking)
 
 ---
 
-## 💣 Scenario 1: Pod not starting
+### 🚫 Pod not starting
 
-You run:
-
-```bash
-kubectl describe pod my-app
-```
-
-See:
+Event:
 
 ```text
-Warning  FailedScheduling  
-0/5 nodes available: insufficient memory
+FailedScheduling
 ```
 
----
+👉 Conclusion:
 
-### 🧠 Conclusion:
-
-👉 Not a code issue
-👉 Not a container issue
-👉 It’s **cluster capacity**
+* NOT app issue
+* NOT container issue
+* **Cluster capacity problem**
 
 ---
 
----
+### 🔁 Pod restarting
 
-## 💣 Scenario 2: Pod keeps restarting
-
-Events:
+Event:
 
 ```text
-Warning  BackOff  
-Back-off restarting failed container
+BackOff restarting failed container
+```
+
+👉 Next step:
+
+```bash
+kubectl logs <pod-name>
 ```
 
 ---
 
-### 🧠 Next step:
+### 🌐 Service not reachable
 
-👉 Check logs
-
-Events told you:
-
-> “It’s crashing — go look why”
-
----
-
----
-
-## 💣 Scenario 3: Service not reachable
-
-Events:
+Event:
 
 ```text
-Warning  FailedCreatePodSandBox  
-network plugin failed
+FailedCreatePodSandBox
 ```
 
----
+👉 Root cause:
 
-### 🧠 Conclusion:
-
-👉 Networking problem (CNI), not app
+* Networking / CNI
 
 ---
 
----
+### ⏳ Pod stuck in ContainerCreating
 
-## 💣 Scenario 4: Pod stuck in ContainerCreating
-
-Events:
+Event:
 
 ```text
-Warning  FailedMount  
-Unable to attach or mount volumes
+FailedMount
+```
+
+👉 Root cause:
+
+* Storage / volume issue
+
+---
+
+## ⚠️ Critical Reality (Most People Ignore This)
+
+---
+
+### 🧠 1. Events Are Ephemeral
+
+![Image](https://images.openai.com/static-rsc-4/t9TViHza90o4krUgi8b980APpuU2TBUEBG6j9KxbMimvuJcM10ekcOikKjB-C30FjbkaOV89XuEHx2X2KPZkx5aF5lSM7e6MrNKEhb-O7NtIhk-0WLy62O9SPgPw0g1sDxqocwvTbcdav5v0ERW62B7J7Q6oTOymHZov_fM_06u993Jf-iFZEGZkuQEIRiU0?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/aROnWD3-9KvMoTfSeb05CUknNLTvMbgcRsB4e5BZ9Vglmb-XxkrUi8YKZ5sUm0OWvEI0oOkiY_9zIiNwpCx62FAIXV-RT5EPXOVhmWzdv2ixEBiJEand_5jgytURq8llYw7FcIG2-uuk37xl9kCBH-JRfUsJDO8osGk4bMrmHozjwGLQGKPnWSBnJc3nyfU2?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/yLj3lXcFCQxD37BxkqlwnLhk1FDC196955ObWOTXqdlPWqu70Vp4nYDTYSsF0gR5qwT72m--_p30XJabakZyGlXIVPNfgY7GOoJF14leSyleF6_4PsxiWH_GzE6IB13-QGLvu3VsxxbvuzVnDuaD5IQBe60pr4COds-FxAAHdcMg-sJ7dU45WviFXChEIggI?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/QfGt_55-XehUx2FUp0OOlLB2zMu5duvH6R39C3xsyOXHqUSkS8BYNsqXP2Qe4HLLrf_rFTilxDiNbMI3sFYIqPhk1xNuchce6vIu9q7hWYh5mkf-gBKAXdQfqrerf59Byv5cPFoC34dsrclW09mnDtX4tYUfJxmKQcTR4zbWhXTjUoQ9WeRXZBUMXfnCw2QC?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/-13Gq-B2ISELU5MjH9F298q6Uu0PTGc3g1v1fJJ7_m5GrPrvTE8kw4U39pwSQf-DpoOsdboNojhDefMz4Lgi7ZL-WD21t0r89aIqjR4ZpmmINfgAw_-4jEN4dY-jehMCUD7K7DWzULsAIHWfENvslk7eKJyL8v-yeZ-kUG-cM2-pwBOb6zmF9yfhXGf5dOLO?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/pN6frvjzCDt40DjCpuXr9cFwj8XYAkIA-3w4B7dkFMCpnf0mF_wzrJaToow4LovTjF78KtPw00nnKhWQAtBh9l3YKjAmSnWdpKHX1PLbTsoEG_MuFl4p9MiUhtIiYGqCtq-oop44rnV5aJMFisvmxZ4kUfypkYZ2IQFAeB8mDUCfekgqBgkosej7IHE1FrGg?purpose=fullsize)
+
+* Stored in etcd
+* TTL ≈ **~1 hour (cluster dependent)**
+* Automatically deleted
+
+👉 Meaning:
+
+> If you didn’t check → evidence is gone
+
+---
+
+### 🧠 2. Events Show Symptoms, Not Always Root Cause
+
+Example:
+
+```text
+insufficient cpu
+```
+
+Reality might be:
+
+* Node taints
+* Affinity mismatch
+* Resource fragmentation
+
+👉 Always ask:
+
+> “What CAUSED this?”
+
+---
+
+### 🧠 3. Event Frequency Matters
+
+```text
+BackOff restarting failed container (x50 over 10m)
+```
+
+* `(x50)` = severity signal
+
+👉 Interpretation:
+
+* x1 → transient issue
+* x50 → persistent failure
+
+---
+
+### 🧠 4. Events Can Be Throttled
+
+* Kubernetes may:
+
+  * Aggregate events
+  * Drop excessive events
+
+👉 Missing errors ≠ no problem
+
+---
+
+## 🔗 Cross-Resource Correlation (Senior Skill)
+
+![Image](https://images.openai.com/static-rsc-4/sNRHM_0KBsTaug5pJaiaSjJJ5ulKd5rO1iFrGHabb3rf546ZF4dUbz_0rIt5iz6S-LvEUMFvGMVIceH9Ww9zQvRAGfbnW8LmZnL7Tv5zO5UzlpDK8kzGzwFWFZx3kkPTNlxKI2YyHfJ5vgVRuToUvlHL8C8Gv_FPwwIVvFT5iuD6do8v-lcF1w_xAC-ryZ-w?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/jsWp5ObJoAJ9PxBYcRISFSjTrifCiJ07vVI3F_559jNaEDl3G3xfoy6vWXFrsBPzf9R3ytBr0BQg16_T-9socK11j0U_nfF06_FRJqBWLjpkcZ-JT437HR-9c2QGqn5yJvSkpFdtG1PCZX7HICX7uQaaw39bY1dpZ3j2McivR2T3SEQsfQgBJEOhBY-hJ5A7?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/R-LdKbKL_6UeA3RR1OFh7qw0s183E8nhrzKpJotINv-a5qfhR4BIWuUhV3WQjHhrt5hcUbzfTDWcHcORqA0oZwpKHPk6skwLGSsV9puCtZSSQMtPEVhp0sn4mjEFL04bOTJtDYH2mRKK9s0bddC2Xs3M-yKM946f61OQUj_r5xk_TvijCxELNc7irmnJfNJL?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/KBs459nFH0Z3kKH3NxJtrjHSRv2QCzg1CPsDjbodNZkhGvZNc-rUD9O9l4qpubARAfbQfEX0cNV3Hb_-r1cQAGfmO9rg90mG5Iv-uVd3Q0fA-LSeZbxbppcjYrKxxVztaRMEGPnSDm9pzMdWlW0yQmGSCklgKWM4Wj6prAhzkPiOE9HhawijBi8o6pOvCtXs?purpose=fullsize)
+
+![Image](https://images.openai.com/static-rsc-4/-ShKP-mPBMfXtuWilP4c_xDJ0ROUO5zJYlogkE-ZW7-718J_puyrhDbf-XVPmTG09RD-ZyO6KRo6JGc5uFRBznBd4pGDH4n5bMuluGVAlGcSKCztStzyeOxOFvY34d1n416LrTKbzVIiG6iI90KktMeUopDia1uMdeWSYC_TBffA3zL839cze83t5yziNZs0?purpose=fullsize)
+
+Never debug in isolation.
+
+Follow the chain:
+
+```text
+Deployment → ReplicaSet → Pod → Node
 ```
 
 ---
 
-### 🧠 Conclusion:
+### Example:
 
-👉 Storage issue (PVC, volume, permissions)
+* Pod:
+
+  ```
+  FailedScheduling
+  ```
+* Node:
+
+  ```
+  NodeNotReady
+  ```
+* Cluster:
+
+  ```
+  Autoscaler triggered
+  ```
+
+👉 Now you see the **full story**
 
 ---
 
-# 📊 What events look like in real clusters
+## 🖥️ Node-Level Events (Often Missed)
 
-![Image](https://images.openai.com/static-rsc-4/rwbi3iSUOmp-AtDJ8gMYnj8dRqxoNhVsKlWlJDTaMgyda6mCgN_y1zjHt4n4y0BahcC8dvEkSX0QwYvN4NuEzInMMv9PdNaa-aFDvGrPSciiS6kSB9FuBIJgTGsPqKI7KalasKfhlrTVI6PIPAry9Qw8--wfI7qR1nymoOUWqaPOpYhJIvJFpwIrX7OBDQoO?purpose=fullsize)
-
-![Image](https://images.openai.com/static-rsc-4/SzR1huxa-n-Th0EaKnJIy0FcS8VGhg4shaEq89ULrp-eeEYYfY2yFVdf2G44whpYHcaHSsDAPiGye_l8iMEZeezGwBZd-ARBxD7HRixSqPyo4KyJ2-pHS6EliYIMcNPF3aj_xj0ww0nPSKAoZ0kJ8CIZ1vqIOSLswEnB6LJsOzBWITXxLIu4Sh4ZJWOPYtUN?purpose=fullsize)
-
-![Image](https://images.openai.com/static-rsc-4/x3AOiBiE-_N8B8nx4hkdAJBe2wMb3vv1G_e44eHOAc0oecYnILtrfl3ixHWYHc1w4-8dMyetkw-517iPRqq5eKkryBzkKWScu4tDuokWJ65BIGlWgROER6c9UryWArajfJuDysaB6DsajinBmZ1gI7Wn8qfI6YhviTz3tryHzQnaBRQxEjRSj_E94iYGUibQ?purpose=fullsize)
-
-
----
-
-# 🧠 Advanced Tricks
-
----
-
-## 🔥 Filter only warnings
+Check nodes:
 
 ```bash
-kubectl get events --field-selector type=Warning
+kubectl describe node <node-name>
 ```
 
-👉 Cuts noise instantly
+Look for:
+
+```text
+MemoryPressure
+DiskPressure
+PIDPressure
+NodeNotReady
+```
+
+👉 Explains:
+
+* Pod evictions
+* Scheduling failures
+* Random restarts
 
 ---
 
-## 🔍 Watch events live
+## 🎯 Advanced Filtering (Reduce Noise)
 
 ```bash
-kubectl get events --watch
+kubectl get events \
+  --field-selector involvedObject.kind=Pod,type=Warning \
+  --sort-by=.metadata.creationTimestamp
 ```
 
-👉 Real-time debugging (very powerful)
+👉 Shows only:
+
+* Pod-related
+* Warning-level
+* Time-ordered issues
 
 ---
 
-## 🎯 Events for specific object
-
-```bash
-kubectl get events --field-selector involvedObject.name=<pod-name>
-```
-
----
-
-# ⚔️ Events vs Logs (critical distinction)
+## ⚔️ Events vs Logs (Never Confuse)
 
 | Events        | Logs         |
 | ------------- | ------------ |
@@ -276,19 +404,33 @@ kubectl get events --field-selector involvedObject.name=<pod-name>
 
 ---
 
-# 💀 Common Mistakes
+## 🧠 Pro Debug Flow (Production Grade)
+
+```text
+Events 
+→ Describe Resource 
+→ Logs 
+→ Node 
+→ Metrics 
+→ Network 
+→ Config
+```
+
+---
+
+## 💀 Common Mistakes
 
 ---
 
 ### ❌ Ignoring events
 
-👉 You miss the root cause
+👉 You miss root cause
 
 ---
 
 ### ❌ Jumping straight to logs
 
-👉 You debug the wrong layer
+👉 Wrong layer debugging
 
 ---
 
@@ -298,42 +440,33 @@ kubectl get events --field-selector involvedObject.name=<pod-name>
 
 ---
 
-### ❌ Missing scheduling errors
+### ❌ Debugging only pod
 
-👉 Waste time on app instead of infra
-
----
-
-# 🧠 Pro Debug Flow (add this to your brain)
-
-```text
-Events → Logs → Metrics → Network
-```
-
-Events FIRST.
-
-Always.
+👉 Ignore node/cluster context
 
 ---
 
-# ⚡ Real DevOps Insight
+## ⚡ Final Insight
 
-Events are like:
-
-> Kubernetes whispering: “Here’s exactly what went wrong… if you bother to read.”
+> Events are Kubernetes saying:
+> “Here’s exactly what went wrong… don’t make me repeat it.”
 
 ---
 
-# 💀 Brutal Truth
+## 💀 Brutal Truth
 
-Most engineers:
+Average engineer:
 
-* Ignore events
-* Restart things
-* Hope it works
+* Restarts pod
+* Hopes it works
 
-Good engineers:
+Good engineer:
 
-* Read events
-* Understand cause
-* Fix once
+* Reads events
+* Fixes issue
+
+Senior engineer:
+
+* Correlates events across system
+* Prevents it from happening again
+
