@@ -106,7 +106,13 @@ This tells the interviewer you know how to narrow down a problem instead of thro
 ### Step 4 — Layer Down: The Debugging Flow
 
 Start from the application and move outward.
+1. APPLICATION-LAYER (LOGS)
+2. POD LAYER (PODS)
+3. SERVICE LAYER (SVC)
+4. NETWORK & DNS LAYER (coreDNS & Network-Policy)
+5. infra level (Gcp/aws vpc-firewall , other network , or node-pressure , cpu-memory Resource)
 
+   
 #### 4A. Application Layer
 
 Check whether the app itself is failing.
