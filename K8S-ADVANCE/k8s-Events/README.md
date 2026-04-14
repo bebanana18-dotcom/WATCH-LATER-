@@ -242,15 +242,6 @@ FailedMount
 
 ![Image](https://images.openai.com/static-rsc-4/t9TViHza90o4krUgi8b980APpuU2TBUEBG6j9KxbMimvuJcM10ekcOikKjB-C30FjbkaOV89XuEHx2X2KPZkx5aF5lSM7e6MrNKEhb-O7NtIhk-0WLy62O9SPgPw0g1sDxqocwvTbcdav5v0ERW62B7J7Q6oTOymHZov_fM_06u993Jf-iFZEGZkuQEIRiU0?purpose=fullsize)
 
-![Image](https://images.openai.com/static-rsc-4/aROnWD3-9KvMoTfSeb05CUknNLTvMbgcRsB4e5BZ9Vglmb-XxkrUi8YKZ5sUm0OWvEI0oOkiY_9zIiNwpCx62FAIXV-RT5EPXOVhmWzdv2ixEBiJEand_5jgytURq8llYw7FcIG2-uuk37xl9kCBH-JRfUsJDO8osGk4bMrmHozjwGLQGKPnWSBnJc3nyfU2?purpose=fullsize)
-
-![Image](https://images.openai.com/static-rsc-4/yLj3lXcFCQxD37BxkqlwnLhk1FDC196955ObWOTXqdlPWqu70Vp4nYDTYSsF0gR5qwT72m--_p30XJabakZyGlXIVPNfgY7GOoJF14leSyleF6_4PsxiWH_GzE6IB13-QGLvu3VsxxbvuzVnDuaD5IQBe60pr4COds-FxAAHdcMg-sJ7dU45WviFXChEIggI?purpose=fullsize)
-
-![Image](https://images.openai.com/static-rsc-4/QfGt_55-XehUx2FUp0OOlLB2zMu5duvH6R39C3xsyOXHqUSkS8BYNsqXP2Qe4HLLrf_rFTilxDiNbMI3sFYIqPhk1xNuchce6vIu9q7hWYh5mkf-gBKAXdQfqrerf59Byv5cPFoC34dsrclW09mnDtX4tYUfJxmKQcTR4zbWhXTjUoQ9WeRXZBUMXfnCw2QC?purpose=fullsize)
-
-![Image](https://images.openai.com/static-rsc-4/-13Gq-B2ISELU5MjH9F298q6Uu0PTGc3g1v1fJJ7_m5GrPrvTE8kw4U39pwSQf-DpoOsdboNojhDefMz4Lgi7ZL-WD21t0r89aIqjR4ZpmmINfgAw_-4jEN4dY-jehMCUD7K7DWzULsAIHWfENvslk7eKJyL8v-yeZ-kUG-cM2-pwBOb6zmF9yfhXGf5dOLO?purpose=fullsize)
-
-![Image](https://images.openai.com/static-rsc-4/pN6frvjzCDt40DjCpuXr9cFwj8XYAkIA-3w4B7dkFMCpnf0mF_wzrJaToow4LovTjF78KtPw00nnKhWQAtBh9l3YKjAmSnWdpKHX1PLbTsoEG_MuFl4p9MiUhtIiYGqCtq-oop44rnV5aJMFisvmxZ4kUfypkYZ2IQFAeB8mDUCfekgqBgkosej7IHE1FrGg?purpose=fullsize)
 
 * Stored in etcd
 * TTL ≈ **~1 hour (cluster dependent)**
@@ -311,14 +302,6 @@ BackOff restarting failed container (x50 over 10m)
 ## 🔗 Cross-Resource Correlation (Senior Skill)
 
 ![Image](https://images.openai.com/static-rsc-4/sNRHM_0KBsTaug5pJaiaSjJJ5ulKd5rO1iFrGHabb3rf546ZF4dUbz_0rIt5iz6S-LvEUMFvGMVIceH9Ww9zQvRAGfbnW8LmZnL7Tv5zO5UzlpDK8kzGzwFWFZx3kkPTNlxKI2YyHfJ5vgVRuToUvlHL8C8Gv_FPwwIVvFT5iuD6do8v-lcF1w_xAC-ryZ-w?purpose=fullsize)
-
-![Image](https://images.openai.com/static-rsc-4/jsWp5ObJoAJ9PxBYcRISFSjTrifCiJ07vVI3F_559jNaEDl3G3xfoy6vWXFrsBPzf9R3ytBr0BQg16_T-9socK11j0U_nfF06_FRJqBWLjpkcZ-JT437HR-9c2QGqn5yJvSkpFdtG1PCZX7HICX7uQaaw39bY1dpZ3j2McivR2T3SEQsfQgBJEOhBY-hJ5A7?purpose=fullsize)
-
-![Image](https://images.openai.com/static-rsc-4/R-LdKbKL_6UeA3RR1OFh7qw0s183E8nhrzKpJotINv-a5qfhR4BIWuUhV3WQjHhrt5hcUbzfTDWcHcORqA0oZwpKHPk6skwLGSsV9puCtZSSQMtPEVhp0sn4mjEFL04bOTJtDYH2mRKK9s0bddC2Xs3M-yKM946f61OQUj_r5xk_TvijCxELNc7irmnJfNJL?purpose=fullsize)
-
-![Image](https://images.openai.com/static-rsc-4/KBs459nFH0Z3kKH3NxJtrjHSRv2QCzg1CPsDjbodNZkhGvZNc-rUD9O9l4qpubARAfbQfEX0cNV3Hb_-r1cQAGfmO9rg90mG5Iv-uVd3Q0fA-LSeZbxbppcjYrKxxVztaRMEGPnSDm9pzMdWlW0yQmGSCklgKWM4Wj6prAhzkPiOE9HhawijBi8o6pOvCtXs?purpose=fullsize)
-
-![Image](https://images.openai.com/static-rsc-4/-ShKP-mPBMfXtuWilP4c_xDJ0ROUO5zJYlogkE-ZW7-718J_puyrhDbf-XVPmTG09RD-ZyO6KRo6JGc5uFRBznBd4pGDH4n5bMuluGVAlGcSKCztStzyeOxOFvY34d1n416LrTKbzVIiG6iI90KktMeUopDia1uMdeWSYC_TBffA3zL839cze83t5yziNZs0?purpose=fullsize)
 
 Never debug in isolation.
 
