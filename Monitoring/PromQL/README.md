@@ -644,9 +644,7 @@ If metrics spike after deploy:
 
 ![Image](https://images.openai.com/static-rsc-4/LByQ96e5XCCBdZEqM3vrjNg5BjbKMyPg-D2x-SsBJrNAVEAE2vsGQiKycfdxDbsQTSprMeqydBicFjRJHtRiPiFVuon_W0zpGFp9YMSXDf2Bsd_5Jv2AHnEO0mWzSqPPKmf8bryU5hAK1VDM5U1SpWRXKea_7oOopmzeg43fSlE3p-NE-f4v7j4cGYfZzIFM?purpose=fullsize)
 
-![Image](https://images.openai.com/static-rsc-4/kUt0kiaaZrjcqyEIuYWzUeirblPKPaB4lKdBTxWRqSu1yf9wOyQ8jaR40ghwtoIax-tc07Zm-44KoZ_9vyrolz9I9jxDj-mh5BtraabxZMNzHojs8oWl7ZttIs_X8cobPjZ_8xh9_F83gpoK4Cawnmr6YtnprdB0_bEywcQEI5skQJY724hHn-1Sc842q97X?purpose=fullsize)
 
-![Image](https://images.openai.com/static-rsc-4/TWjHTH9LFGWuQ37yesOShGiIVcJ0HtMVE9AT_6z_5EXR1VInf5QdzZJWLlbXD8T7L79spn_y1ET8KO_PXhc7SiBVmI5DxjOyrUlXhM6TCJuLjanItIRuTFJGTrEHkG_S7TOOZA-mnAWqRhk30l5xEUOy1FEDOABtE_rsqb7Avw84hZSO1kCvacID7DHYfQK8?purpose=fullsize)
 
 ---
 
