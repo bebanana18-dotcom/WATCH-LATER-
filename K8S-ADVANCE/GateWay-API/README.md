@@ -619,3 +619,13 @@ DevOps / App Engineer
 ---
 
 *These notes cover: Ingress limitations, Gateway API motivation, 3-resource architecture, Envoy Gateway setup, basic routing, URL rewrite, traffic splitting, and canary deployments.*
+
+# clean-up
+
+```csharp
+kubectl delete deployment backend backend-2
+
+kubectl delete svc backend backend-2
+
+helm uninstall eg -n envoy-gateway-system
+```
